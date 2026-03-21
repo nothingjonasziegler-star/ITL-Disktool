@@ -1,0 +1,17 @@
+﻿[Unit]
+Description=DiskToolITL 1.0 - Automatisches Disk-Wipe-System
+After=network.target udev.service
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /opt/disktoolitl/disktoolitl.sh
+WorkingDirectory=/opt/disktoolitl
+Restart=always
+RestartSec=5
+User=root
+StandardOutput=append:/var/log/disktoolitl/disktoolitl.log
+StandardError=append:/var/log/disktoolitl/disktoolitl.log
+
+[Install]
+WantedBy=multi-user.target

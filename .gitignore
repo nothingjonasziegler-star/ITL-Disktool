@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+/tmp/
+notitz
+*.png
+splash.png
+splasy.png
