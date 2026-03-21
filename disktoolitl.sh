@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 mkdir -p /tmp/wipe_db

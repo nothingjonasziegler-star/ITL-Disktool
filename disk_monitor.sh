@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -uo pipefail
 
 POLL_INTERVAL=5

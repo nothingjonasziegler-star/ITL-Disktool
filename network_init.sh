@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -uo pipefail
 
 FALLBACK_IP="192.168.1.200"

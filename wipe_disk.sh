@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -uo pipefail
 
 DEVICE="$1"
