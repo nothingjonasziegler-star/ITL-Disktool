@@ -5,217 +5,88 @@ export LC_ALL=C.UTF-8
 WIPE_DB="/tmp/wipe_db"
 LOG_FILE="$SCRIPT_DIR/logs/disktoolitl.log"
 
-R=$'\033[0;31m'
-BR=$'\033[1;31m'
-W=$'\033[1;37m'
-DG=$'\033[0;90m'
-CY=$'\033[0;36m'
-GN=$'\033[0;32m'
-YL=$'\033[1;33m'
-NC=$'\033[0m'
-BD=$'\033[1m'
-BG41=$'\033[41m'
-
-BLINK=0
-
-cleanup() {
-    printf '\033[?25h'
-    tput rmcup
-    [ -t 0 ] && stty echo 2>/dev/null
-    exit 0
-}
-trap cleanup INT TERM EXIT HUP
-
-tput smcup
-[ -t 0 ] && stty -echo 2>/dev/null
-printf '\033[?25l'
-
 get_ip() {
     local ip
     ip=$(ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1); exit}')
     echo "${ip:-N/A}"
 }
 
-hline() {
-    local COLS; COLS=$(tput cols)
-    printf "${DG}"; printf 'â”€%.0s' $(seq 1 "$COLS"); printf "${NC}"
-}
-
-draw() {
-    local COLS ROWS
-    COLS=$(tput cols)
+build_content() {
+    local IP ROWS COLS
+    IP=$(get_ip)
     ROWS=$(tput lines)
-    local row=0 k
+    COLS=$(tput cols)
 
-    tput cup 0 0; printf "%-${COLS}s" ""
-    tput cup 1 0; printf "%-${COLS}s" ""
-    row=2
-
-    local LW=41
-    local LC=$(( (COLS - LW) / 2 ))
-    [[ $LC -lt 1 ]] && LC=1
-    local TX=$(( LC + LW + 4 ))
-
-    local -a LOGO_LINES=(
- 
-   "  ████████████████████████████████████      "
-   "  █████████████████████████████████████     "
-   "              ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   ████                   "
-   "       ████   ████   █████████████████      "
-   "       ████   ████   █████████████████      "
-    )
-
-    local -a LABEL_LINES=(
-        ""
-        ""
-        "${BR}${BD}ITL Disktool${NC}"
-        "${DG}Harddrive cleaner tool${NC}"
-        "${DG}based on Debian${NC}"
-        "${DG}Version 1.0${NC}"
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-    )
-
-    for i in "${!LOGO_LINES[@]}"; do
-        tput cup $row 0; printf "%-${COLS}s" ""
-        tput cup $row $LC
-        printf "${R}${BD}%s${NC}" "${LOGO_LINES[$i]}"
-        if [[ -n "${LABEL_LINES[$i]}" ]]; then
-            tput cup $row $TX
-            printf "%b" "${LABEL_LINES[$i]}"
-        fi
-        row=$((row+1))
-    done
-
-    tput cup $row 0; printf "%-${COLS}s" ""
-    row=$((row+1))
-
-    tput cup $row 0; hline
-    row=$((row+1))
-
-    local IP; IP=$(get_ip)
-    local DOT
-    [[ $BLINK -eq 1 ]] && DOT="${R}â—${NC}" || DOT="${DG}â—${NC}"
-
-    tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 2
-    printf " ${DOT} ${BD}SYSTEM AKTIV${NC}     ${DG}IP:${NC} ${CY}${IP}${NC}"
-    row=$((row+1))
-
-    tput cup $row 0; printf "%-${COLS}s" ""
-    row=$((row+1))
-
-    tput cup $row 0; hline
-    row=$((row+1))
-
-    tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 2
-    printf "${BD}${W}â–¸ FESTPLATTEN STATUS${NC}"
-    row=$((row+1))
-
-    tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 4
-    printf "${DG}%-14s  %-5s  %6s  %-6s  %-22s  %s${NC}" \
-        "DEVICE" "TYP" "GRÃ–ÃŸE" "SMART" "FORTSCHRITT" "STATUS"
-    row=$((row+1))
+    local c=""
+    c+="\n"
+    c+="  ITL Disktool - Harddrive cleaner tool\n"
+    c+="  Version 1.0 | IP: ${IP}\n"
+    c+="\n"
+    c+="  ---------------------------------------------------------------\n"
+    c+="  FESTPLATTEN STATUS\n"
+    c+="  ---------------------------------------------------------------\n"
+    c+="$(printf '  %-14s %-5s %7s %-6s %-24s %s' 'DEVICE' 'TYP' 'GROESSE' 'SMART' 'FORTSCHRITT' 'STATUS')\n"
 
     local disk_count=0
     for state_file in "$WIPE_DB"/*_state.json; do
-        [[ -f "$state_file" ]] || continue
-        [[ $row -ge $((ROWS-7)) ]] && break
+        [ -f "$state_file" ] || continue
 
         local DEV TYPE SIZE STATUS PROG SMART_RAW
-        DEV=$(jq -r      '.device       // "?"'    "$state_file" 2>/dev/null)
-        TYPE=$(jq -r     '.type         // "?"'    "$state_file" 2>/dev/null)
-        SIZE=$(jq -r     '.size_gb      // 0'      "$state_file" 2>/dev/null)
-        STATUS=$(jq -r   '.status       // "?"'    "$state_file" 2>/dev/null)
-        PROG=$(jq -r     '.progress     // 0'      "$state_file" 2>/dev/null)
+        DEV=$(jq -r '.device // "?"' "$state_file" 2>/dev/null)
+        TYPE=$(jq -r '.type // "?"' "$state_file" 2>/dev/null)
+        SIZE=$(jq -r '.size_gb // 0' "$state_file" 2>/dev/null)
+        STATUS=$(jq -r '.status // "?"' "$state_file" 2>/dev/null)
+        PROG=$(jq -r '.progress // 0' "$state_file" 2>/dev/null)
         SMART_RAW=$(jq -r '.smart_passed // "null"' "$state_file" 2>/dev/null)
 
-        local BAR_W=22 FILLED EMPTY BAR=""
+        local BAR_W=20 FILLED EMPTY BAR=""
         FILLED=$(awk "BEGIN{printf \"%d\", $PROG*$BAR_W/100}")
         EMPTY=$(( BAR_W - FILLED ))
-        for (( k=0; k<FILLED; k++ )); do BAR+="â–ˆ"; done
-        for (( k=0; k<EMPTY;  k++ )); do BAR+="â–‘"; done
+        BAR="["
+        for (( k=0; k<FILLED; k++ )); do BAR+="#"; done
+        for (( k=0; k<EMPTY; k++ )); do BAR+="-"; done
+        BAR+="]"
 
-        local SC
-        case "$STATUS" in
-            SMART)  SC="$CY" ;;
-            WIPING) SC="$YL" ;;
-            DONE)   SC="$GN" ;;
-            ERROR)  SC="$R"  ;;
-            *)      SC="$DG" ;;
-        esac
+        local SMART_STR="--"
+        [ "$SMART_RAW" = "true" ] && SMART_STR="PASS"
+        [ "$SMART_RAW" = "false" ] && SMART_STR="FAIL"
 
-        local SMART_STR="${DG} â€“${NC}"
-        [[ "$SMART_RAW" == "true"  ]] && SMART_STR="${GN}PASS${NC}"
-        [[ "$SMART_RAW" == "false" ]] && SMART_STR="${R}FAIL${NC}"
-
-        tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 4
-        printf "${W}%-14s${NC}  ${DG}%-5s${NC}  ${W}%5.0fGB${NC}  ${SMART_STR}    ${DG}[${NC}${SC}%s${NC}${DG}]${NC}  ${SC}%-6s${NC} ${DG}%.0f%%${NC}" \
-            "$DEV" "$TYPE" "$SIZE" "$BAR" "$STATUS" "$PROG"
-
-        row=$((row+1))
+        c+="$(printf '  %-14s %-5s %5.0fGB %-6s %s %3.0f%% %-6s' "$DEV" "$TYPE" "$SIZE" "$SMART_STR" "$BAR" "$PROG" "$STATUS")\n"
         disk_count=$((disk_count+1))
     done
 
-    if [[ $disk_count -eq 0 ]]; then
-        tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 4
-        printf "${DG}Warte auf DatentrÃ¤ger...${NC}"
-        row=$((row+1))
+    if [ $disk_count -eq 0 ]; then
+        c+="  Warte auf neue Datentraeger...\n"
     fi
 
-    tput cup $row 0; printf "%-${COLS}s" ""
-    row=$((row+1))
+    c+="\n"
+    c+="  ---------------------------------------------------------------\n"
+    c+="  LOG\n"
+    c+="  ---------------------------------------------------------------\n"
 
-    tput cup $row 0; hline
-    row=$((row+1))
+    local log_max=$(( ROWS - disk_count - 18 ))
+    [ $log_max -lt 3 ] && log_max=3
+    [ $log_max -gt 20 ] && log_max=20
 
-    tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 2
-    printf "${BD}${W}â–¸ LOG${NC}"
-    row=$((row+1))
-
-    local log_avail=$(( ROWS - row - 1 ))
-    [[ $log_avail -lt 1 ]] && log_avail=1
-    local log_row=$row
-
-    if [[ -f "$LOG_FILE" ]]; then
+    if [ -f "$LOG_FILE" ]; then
         while IFS= read -r line; do
-            [[ $log_row -ge $((ROWS-1)) ]] && break
-            local maxlen=$(( COLS - 5 ))
-            tput cup $log_row 0; printf "%-${COLS}s" ""; tput cup $log_row 4
-            printf "${DG}%-${maxlen}.${maxlen}s${NC}" "$line"
-            log_row=$((log_row+1))
-        done < <(tail -n "$log_avail" "$LOG_FILE")
+            c+="  $line\n"
+        done < <(tail -n "$log_max" "$LOG_FILE")
     else
-        tput cup $log_row 0; printf "%-${COLS}s" ""; tput cup $log_row 4
-        printf "${DG}Kein Log vorhanden${NC}"
-        log_row=$((log_row+1))
+        c+="  Kein Log vorhanden\n"
     fi
 
-    while [[ $log_row -lt $((ROWS-1)) ]]; do
-        tput cup $log_row 0; printf "%-${COLS}s" ""
-        log_row=$((log_row+1))
-    done
-
-    tput cup $((ROWS-1)) 0
-    local footer="  DiskToolITL 1.0  â”‚  Strg+C zum Beenden"
-    printf "${DG}%-${COLS}s${NC}" "$footer"
+    echo -e "$c"
 }
 
+trap "clear; exit 0" INT TERM EXIT HUP
+
 while true; do
-    draw
-    sleep 1
-    BLINK=$(( 1 - BLINK ))
+    ROWS=$(tput lines)
+    COLS=$(tput cols)
+    CONTENT=$(build_content)
+    dialog --no-collapse \
+           --title " DiskToolITL 1.0 | Strg+C zum Beenden " \
+           --infobox "$CONTENT" "$((ROWS - 2))" "$((COLS - 2))"
+    sleep 2
 done

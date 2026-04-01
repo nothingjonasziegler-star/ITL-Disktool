@@ -4,6 +4,7 @@ export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 
 mkdir -p /tmp/wipe_db
+rm -f /tmp/wipe_db/*_state.json
 mkdir -p "$SCRIPT_DIR/logs"
 
 bash "$SCRIPT_DIR/network_init.sh"
