@@ -1,6 +1,9 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 WIPE_DB="/tmp/wipe_db"
-LOG_FILE="/var/log/disktoolitl/disktoolitl.log"
+LOG_FILE="$SCRIPT_DIR/logs/disktoolitl.log"
 
 R=$'\033[0;31m'
 BR=$'\033[1;31m'
@@ -109,7 +112,7 @@ draw() {
     [[ $BLINK -eq 1 ]] && DOT="${R}â—${NC}" || DOT="${DG}â—${NC}"
 
     tput cup $row 0; printf "%-${COLS}s" ""; tput cup $row 2
-    printf " ${DOT} ${BD}SYSTEM AKTIV${NC}     ${DG}Web-GUI:${NC} ${CY}http://${IP}:8080${NC}"
+    printf " ${DOT} ${BD}SYSTEM AKTIV${NC}     ${DG}IP:${NC} ${CY}${IP}${NC}"
     row=$((row+1))
 
     tput cup $row 0; printf "%-${COLS}s" ""

@@ -3,8 +3,9 @@ set -uo pipefail
 
 DEVICE="$1"
 DEV_SAFE=$(basename "$DEVICE")
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WIPE_DB="/tmp/wipe_db"
-LOG="/var/log/disktoolitl/disktoolitl.log"
+LOG="$SCRIPT_DIR/logs/disktoolitl.log"
 CONFIG_FILE="$WIPE_DB/config.json"
 SMART_FILE="$WIPE_DB/${DEV_SAFE}_smart.json"
 STATE_FILE="$WIPE_DB/${DEV_SAFE}_state.json"

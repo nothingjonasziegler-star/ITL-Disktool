@@ -3,9 +3,13 @@ set -uo pipefail
 
 DEVICE="$1"
 DEV_SAFE=$(basename "$DEVICE")
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WIPE_DB="/tmp/wipe_db"
-LOG="/var/log/disktoolitl/disktoolitl.log"
+LOG_DIR="$SCRIPT_DIR/logs"
+LOG="$LOG_DIR/disktoolitl.log"
 STATE_FILE="$WIPE_DB/${DEV_SAFE}_state.json"
+
+mkdir -p "$LOG_DIR"
 
 ts()  { date '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "$(ts)  $1" | tee -a "$LOG"; }

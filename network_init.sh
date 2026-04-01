@@ -37,7 +37,7 @@ SEP="===================================================="
 echo ""
 echo "$SEP"
 echo "  DiskToolITL 1.0"
-echo "  Web-GUI : http://${IP}:8080"
+echo "  IP: ${IP}"
 echo "$SEP"
 echo ""
 

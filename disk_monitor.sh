@@ -1,9 +1,13 @@
 #!/bin/bash
 set -uo pipefail
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 
 POLL_INTERVAL=5
-LOG="/var/log/disktoolitl/disktoolitl.log"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_DIR="$SCRIPT_DIR/logs"
+LOG="$LOG_DIR/disktoolitl.log"
+mkdir -p "$LOG_DIR"
 
 ts()  { date '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "$(ts)  $1" | tee -a "$LOG"; }
@@ -31,6 +35,16 @@ process_disk() {
 
 BOOT_DISK=$(get_boot_disk)
 log "Boot-Disk erkannt und ausgeschlossen: $BOOT_DISK"
+
+# Alle beim Start bereits vorhandenen Disks als "bekannt" markieren -- NICHT verarbeiten
+while IFS= read -r disk; do
+    if [ "$disk" != "$BOOT_DISK" ]; then
+        known_disks[$disk]=1
+        log "Vorhandene Disk beim Start uebersprungen: $disk"
+    fi
+done < <(get_all_disks)
+
+log "Ueberwachung gestartet -- nur NEU angeschlossene Disks werden verarbeitet"
 
 while true; do
     while IFS= read -r disk; do
