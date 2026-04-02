@@ -3,7 +3,6 @@ set -e
 
 sudo apt update
 sudo apt install -y jq smartmontools util-linux isc-dhcp-client net-tools curl dialog
-
 sudo mkdir -p /opt/disktoolitl
 sudo cp -r . /opt/disktoolitl/
 sudo chmod +x /opt/disktoolitl/*.sh

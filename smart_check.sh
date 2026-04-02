@@ -40,6 +40,8 @@ MODEL=$(echo "$SMART_JSON"    | jq -r '.model_name    // ""')
 SERIAL=$(echo "$SMART_JSON"   | jq -r '.serial_number // ""')
 ROTATION=$(echo "$SMART_JSON" | jq -r '.rotation_rate // -1')
 SMART_RAW=$(echo "$SMART_JSON" | jq -r '.smart_status.passed // "null"')
+TEMP=$(echo "$SMART_JSON" | jq -r '.temperature.current // "null"')
+POWER_ON_H=$(echo "$SMART_JSON" | jq -r '.power_on_time.hours // "null"')
 
 if [ "$ROTATION" = "0" ]; then
     DISK_TYPE="SSD"
@@ -67,10 +69,14 @@ jq -n \
   --arg status  "SMART" \
   --argjson progress     0 \
   --argjson smart_passed "$SMART_PASSED" \
+  --argjson temp         "${TEMP:-null}" \
+  --argjson power_hours  "${POWER_ON_H:-null}" \
+  --arg extra   "" \
   --arg timestamp "$(date -Iseconds)" \
   '{device:$device,type:$type,model:$model,serial:$serial,
     size_gb:$size_gb,status:$status,progress:$progress,
-    smart_passed:$smart_passed,timestamp:$timestamp}' \
+    smart_passed:$smart_passed,temp:$temp,power_hours:$power_hours,
+    extra:$extra,timestamp:$timestamp}' \
   > "$STATE_FILE"
 
 STATUS_STR="UNKNOWN"
