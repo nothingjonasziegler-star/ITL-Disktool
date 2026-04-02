@@ -12,6 +12,7 @@ GN=$'\033[0;32m'
 YL=$'\033[1;33m'
 R=$'\033[0;31m'
 BR=$'\033[1;31m'
+WR=$'\033[38;5;88m'
 BD=$'\033[1m'
 NC=$'\033[0m'
 INV=$'\033[7m'
@@ -81,19 +82,37 @@ draw() {
     done
 
     clear_line $row
-    put $row 2 "${BR}${BD} ___ _____ _       ____  _     _   _____           _${NC}"
+    put $row 2 "${WR}${BD}████████████████████████████████████${NC}"
     row=$((row+1))
     clear_line $row
-    put $row 2 "${BR}${BD}|_ _|_   _| |     |  _ \\(_)___| | _|_   _|__   ___| |${NC}"
+    put $row 2 "${WR}${BD}█████████████████████████████████████${NC}"
     row=$((row+1))
     clear_line $row
-    put $row 2 "${BR}${BD} | |  | | | |     | | | | / __| |/ / | |/ _ \\ / _ \\ |${NC}"
+    put $row 2 "${WR}${BD}            ████   ████${NC}"
     row=$((row+1))
     clear_line $row
-    put $row 2 "${BR}${BD} | |  | | | |___  | |_| | \\__ \\   <  | | (_) | (_) | |${NC}"
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
     row=$((row+1))
     clear_line $row
-    put $row 2 "${BR}${BD}|___| |_| |_____| |____/|_|___/_|\\_\\ |_|\\___/ \\___/|_|${NC}"
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   ████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   █████████████████${NC}"
+    row=$((row+1))
+    clear_line $row
+    put $row 2 "${WR}${BD}     ████   ████   █████████████████${NC}"
     row=$((row+1))
 
     clear_line $row
