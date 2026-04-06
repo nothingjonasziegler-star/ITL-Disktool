@@ -31,7 +31,7 @@ printf '\033[?25l'
 clear
 
 get_ip() {
-    ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1); exit}'
+    ip -4 addr show scope global 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1 | head -1
 }
 
 format_uptime() {
@@ -88,7 +88,7 @@ draw() {
     BUF+="  ${WR}${BD}     ████   ████   █████████████████${NC}${EL}\n"
     BUF+="  ${WR}${BD}     ████   ████   █████████████████${NC}${EL}\n"
     BUF+="${EL}\n"
-    BUF+="  ${W}${BD}Harddrive Cleaner v2.0${NC}  ${DG}|${NC}  ${CY}DOD 5220.22-M (3-Pass)${NC}${EL}\n"
+    BUF+="  ${W}${BD}Harddrive Cleaner v2.0${NC}  ${DG}|${NC}  ${CY}Einfach Festplatten Anstecken und Löschen${NC}${EL}\n"
     BUF+="  ${DG}IP: ${CY}${IP}${NC}  ${DG}|  Zeit: ${W}${NOW}${NC}  ${DG}|  Uptime: ${W}${UPTIME_STR}${NC}${EL}\n"
     BUF+="${EL}\n"
     BUF+=" ${DG}${hline}${NC}\n"
@@ -191,7 +191,7 @@ draw() {
         row=$((row+1))
     done
 
-    BUF+="${INV}${DG} DiskToolITL 2.0  |  DOD 5220.22-M  |  Strg+C = Beenden $(printf '%-*s' $(( COLS - 58 )) '')${NC}"
+    BUF+="${INV}${DG} DiskToolITL 2.0  |  Einfach Festplatten Anstecken und Löschen  |  Strg+C = Beenden $(printf '%-*s' $(( COLS - 55 )) '')${NC}"
 
     printf '%b' "$BUF"
 }

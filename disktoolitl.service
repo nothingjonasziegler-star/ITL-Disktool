@@ -1,5 +1,5 @@
 ﻿[Unit]
-Description=DiskToolITL 1.0 - Automatisches Disk-Wipe-System
+Description=DiskToolITL 2.0 - DSGVO-konformes Disk-Wipe-System
 After=network.target udev.service
 Wants=network.target
 

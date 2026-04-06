@@ -7,3 +7,5 @@ notitz
 *.png
 splash.png
 splasy.png
+.env
+logs/
