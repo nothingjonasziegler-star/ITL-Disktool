@@ -1,4 +1,6 @@
-﻿# DiskToolITL 1.0
+﻿**DSGVO-Hinweis:**
+Dieses Tool speichert und überträgt ausschließlich technische Statusdaten (Device, Typ, Status, Fortschritt, Größe, SMART-Status). Es werden keine personenbezogenen Daten oder Seriennummern verarbeitet oder angezeigt. Die Weboberfläche zeigt nur anonyme Statusinformationen aller erkannten Datenträger.
+# DiskToolITL 1.0
 
 Automatisiertes System zum sicheren Löschen von Festplatten (HDD/SSD) mit Hot-Swap-Erkennung, SMART-Diagnostik und Web-Oberfläche.
 

@@ -30,7 +30,7 @@ if [ -z "$SERVER_URL" ]; then
     exit 0
 fi
 
-PAYLOAD=$(jq -s '.[0] * .[1]' "$STATE_FILE" "$SMART_FILE" 2>/dev/null || cat "$SMART_FILE")
+PAYLOAD=$(jq '{device,type,size_gb,status,progress,smart_passed,timestamp}' "$STATE_FILE")
 
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
     -X POST "$SERVER_URL" \

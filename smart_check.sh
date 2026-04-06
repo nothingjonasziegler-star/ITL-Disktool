@@ -36,43 +36,28 @@ log "$DEVICE: Lese SMART-Daten"
 SMART_JSON=$(smartctl -a -j "$DEVICE" 2>/dev/null || echo '{}')
 echo "$SMART_JSON" > "$SMART_FILE"
 
-MODEL=$(echo "$SMART_JSON"    | jq -r '.model_name    // ""')
-SERIAL=$(echo "$SMART_JSON"   | jq -r '.serial_number // ""')
 ROTATION=$(echo "$SMART_JSON" | jq -r '.rotation_rate // -1')
 SMART_RAW=$(echo "$SMART_JSON" | jq -r '.smart_status.passed // "null"')
 TEMP=$(echo "$SMART_JSON" | jq -r '.temperature.current // "null"')
 POWER_ON_H=$(echo "$SMART_JSON" | jq -r '.power_on_time.hours // "null"')
-
 if [ "$ROTATION" = "0" ]; then
-    DISK_TYPE="SSD"
+  DISK_TYPE="SSD"
 else
-    DISK_TYPE="HDD"
+  DISK_TYPE="HDD"
 fi
-
 SIZE_BYTES=$(blockdev --getsize64 "$DEVICE" 2>/dev/null || echo 0)
 SIZE_GB=$(awk "BEGIN {printf \"%.1f\", $SIZE_BYTES/1073741824}")
-
 if [ "$SMART_RAW" = "true" ]; then
-    SMART_PASSED="true"
+  SMART_PASSED="true"
 elif [ "$SMART_RAW" = "false" ]; then
-    SMART_PASSED="false"
+  SMART_PASSED="false"
 else
-    SMART_PASSED="null"
+  SMART_PASSED="null"
 fi
-
 jq -n \
-  --arg device  "$DEVICE" \
-  --arg type    "$DISK_TYPE" \
-  --arg model   "$MODEL" \
-  --arg serial  "$SERIAL" \
-  --argjson size_gb      "$SIZE_GB" \
-  --arg status  "SMART" \
-  --argjson progress     0 \
-  --argjson smart_passed "$SMART_PASSED" \
-  --argjson temp         "${TEMP:-null}" \
-  --argjson power_hours  "${POWER_ON_H:-null}" \
+  --arg model    "$MODEL" \
+  --arg serial   "$SERIAL" \
   --arg extra   "" \
-  --arg timestamp "$(date -Iseconds)" \
   '{device:$device,type:$type,model:$model,serial:$serial,
     size_gb:$size_gb,status:$status,progress:$progress,
     smart_passed:$smart_passed,temp:$temp,power_hours:$power_hours,
