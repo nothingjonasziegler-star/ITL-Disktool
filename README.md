@@ -1,5 +1,4 @@
-# DiskToolITL 2.0
-
+# DiskTool
 DSGVO-konformes System zum automatischen Erkennen, Prüfen und sicheren Löschen von Datenträgern mit Hot-Swap-Unterstützung.
 
 **DSGVO-Hinweis:** Dieses Tool speichert ausschließlich technische Daten (Device, Typ, Status, Fortschritt, Größe, SMART-Status). Es werden keine personenbezogenen Daten verarbeitet. Löschzertifikate werden gemäß Art. 17 DSGVO erstellt.
