@@ -1,6 +1,4 @@
-﻿**DSGVO-Hinweis:**
-Dieses Tool speichert und überträgt ausschließlich technische Statusdaten (Device, Typ, Status, Fortschritt, Größe, SMART-Status). Es werden keine personenbezogenen Daten oder Seriennummern verarbeitet oder angezeigt. Die Weboberfläche zeigt nur anonyme Statusinformationen aller erkannten Datenträger.
-# DiskToolITL 1.0
+﻿# DiskToolITL 1.0
 
 Automatisiertes System zum sicheren Löschen von Festplatten (HDD/SSD) mit Hot-Swap-Erkennung, SMART-Diagnostik und Web-Oberfläche.
 
@@ -13,7 +11,7 @@ DiskToolITL ist eine minimalistische, Debian-basierte Lösung zur automatischen 
 Das System ist für den Einsatz in:
 
 * IT-Recycling
-* Forensik / Datenschutz
+* Forensik
 * Rechenzentren
 * Werkstätten / Labore
 
@@ -304,7 +302,7 @@ Alle Status- und Metadaten werden lokal gespeichert:
 
 * Massenerasure von Datenträgern
 * Hardware-Recycling
-* Datenschutzkonforme Löschung
+* Sichere Löschung
 * Testumgebungen für Storage-Systeme
 * Automatisierte Werkstattlösungen
 

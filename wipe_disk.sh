@@ -257,16 +257,14 @@ if $VERIFY_OK; then
         echo "  Dauer:         ${WIPE_MIN} Minuten"
         echo ""
         echo "  Verifikation:  BESTANDEN ($VERIFY_POINTS Pruefpunkte)"
-        echo "  Ergebnis:      SICHER GELOESCHT (DSGVO Art. 17 konform)"
+        echo "  Ergebnis:      SICHER GELOESCHT"
         echo ""
         echo "  Hostname:      $(hostname)"
         echo "  Erstellt:      $(date '+%Y-%m-%d %H:%M:%S')"
         echo "========================================================"
         echo ""
-        echo "  DSGVO-Hinweis: Diese Loeschung erfolgte gemaess"
-        echo "  Art. 17 DSGVO (Recht auf Loeschung). Alle Daten auf"
-        echo "  dem oben genannten Datentraeger wurden unwiderruflich"
-        echo "  und nachweislich vernichtet."
+        echo "  Alle Daten auf dem oben genannten Datentraeger wurden"
+        echo "  unwiderruflich und nachweislich vernichtet."
         echo "========================================================"
     } > "$CERT_FILE"
 
@@ -275,7 +273,7 @@ if $VERIFY_OK; then
     echo "  SHA256: $CERT_HASH" >> "$CERT_FILE"
     echo "========================================================"  >> "$CERT_FILE"
 
-    log "$DEVICE: DSGVO-Loeschzertifikat erstellt: $CERT_FILE"
+    log "$DEVICE: Loeschzertifikat erstellt: $CERT_FILE"
 else
     log "$DEVICE: Verifikation FEHLGESCHLAGEN -> ERROR"
     update_state "ERROR" 0 "Verifikation fehlgeschlagen"

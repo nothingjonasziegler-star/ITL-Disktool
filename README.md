@@ -1,17 +1,15 @@
 # DiskTool
-DSGVO-konformes System zum automatischen Erkennen, Prüfen und sicheren Löschen von Datenträgern mit Hot-Swap-Unterstützung.
-
-**DSGVO-Hinweis:** Dieses Tool speichert ausschließlich technische Daten (Device, Typ, Status, Fortschritt, Größe, SMART-Status). Es werden keine personenbezogenen Daten verarbeitet. Löschzertifikate werden gemäß Art. 17 DSGVO erstellt.
+System zum automatischen Erkennen, Prüfen und sicheren Löschen von Datenträgern mit Hot-Swap-Unterstützung.
 
 ---
 
 ## Übersicht
 
-DiskToolITL erkennt automatisch neu angeschlossene Datenträger, liest SMART-Daten aus, löscht die Disk mit der für den Typ optimalen Methode und erstellt ein DSGVO-konformes Löschzertifikat mit SHA256-Prüfsumme.
+DiskToolITL erkennt automatisch neu angeschlossene Datenträger, liest SMART-Daten aus, löscht die Disk mit der für den Typ optimalen Methode und erstellt ein Löschzertifikat mit SHA256-Prüfsumme.
 
 Einsatzgebiete:
 - IT-Recycling
-- Datenschutz / DSGVO-Löschung
+- Sichere Datenlöschung
 - Rechenzentren
 - Werkstätten / Labore
 
@@ -118,7 +116,7 @@ Festplatte anstecken
   Verifikation (20 Prüfpunkte)
         │
         ▼
-  Löschzertifikat erstellen (SHA256, DSGVO Art. 17)
+  Löschzertifikat erstellen (SHA256)
         │
         ▼
   Zertifikat auf Netzwerk-Share kopieren (optional)
@@ -180,7 +178,6 @@ Nach erfolgreicher Löschung wird ein Zertifikat erstellt mit:
 - Löschmethode
 - Start-/Endzeit, Dauer
 - Verifikationsergebnis (20 Prüfpunkte)
-- DSGVO Art. 17 Konformitätshinweis
 - SHA256-Prüfsumme
 
 Speicherort: `logs/certificates/` und optional auf dem konfigurierten Netzwerk-Share.

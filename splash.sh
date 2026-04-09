@@ -88,7 +88,7 @@ draw() {
     BUF+="  ${WR}${BD}     ████   ████   █████████████████${NC}${EL}\n"
     BUF+="  ${WR}${BD}     ████   ████   █████████████████${NC}${EL}\n"
     BUF+="${EL}\n"
-    BUF+="  ${W}${BD}Harddrive Cleaner v2.0${NC}  ${DG}|${NC}  ${CY}Einfach Festplatten Anstecken und Löschen${NC}${EL}\n"
+    BUF+="  ${W}${BD}Harddrive Cleaner v2.0${NC}${EL}\n"
     BUF+="  ${DG}IP: ${CY}${IP}${NC}  ${DG}|  Zeit: ${W}${NOW}${NC}  ${DG}|  Uptime: ${W}${UPTIME_STR}${NC}${EL}\n"
     BUF+="${EL}\n"
     BUF+=" ${DG}${hline}${NC}\n"
@@ -191,7 +191,7 @@ draw() {
         row=$((row+1))
     done
 
-    BUF+="${INV}${DG} DiskToolITL 2.0  |  Einfach Festplatten Anstecken und Löschen  |  Strg+C = Beenden $(printf '%-*s' $(( COLS - 55 )) '')${NC}"
+    BUF+="${INV}${DG} DiskToolITL 2.0  |  Strg+C = Beenden $(printf '%-*s' $(( COLS - 38 )) '')${NC}"
 
     printf '%b' "$BUF"
 }
